@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Header = () => {
+function Header(){
   return (
     <header className="bg-primary text-white py-4 mb-4">
       <div className="container text-center">

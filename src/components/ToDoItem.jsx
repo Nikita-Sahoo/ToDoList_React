@@ -1,8 +1,8 @@
-function ToDoItem(){
-    return(
-        <>
-        </>
-    )
+function ToDoList(){
+  return (
+    <>
+    </>
+  )
 }
 
-export default ToDoItem;
+export default ToDoList;

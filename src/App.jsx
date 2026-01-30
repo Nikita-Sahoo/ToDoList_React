@@ -1,24 +1,63 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './components/Header';
 import ToDoList from './components/ToDoList';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import './index.css';
+import "./App.css";
 
-const App = () => {
- 
+function App() {
   return (
     <div className="app-container">
       <Header />
+      
+      <main className="main-content">
+        <div className="container">
+          {/* Stats Section */}
+          <div className="stats-container">
+            <div className="stat-card stat-completed">
+              <div className="stat-content">
+                <h3 className="stat-number">2</h3>
+                <p className="stat-label">Completed</p>
+              </div>
+            </div>
+            <div className="stat-card stat-pending">
+              <div className="stat-content">
+                <h3 className="stat-number">3</h3>
+                <p className="stat-label">Pending</p>
+              </div>
+            </div>
+          </div>
 
-      <main className="container">
-        
+          {/* Add Todo Form */}
+          <div className="add-todo-card">
+            <div className="card-header">
+              <h2>Add New Task</h2>
+            </div>
+            <div className="card-body">
+              <div className="form-group">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="Enter a new task..."/>
+                  <button className="add-button" >
+                    <span className="plus-icon">+</span>
+                    Add Task
+                  </button>
+                </div>
+                <p className="form-hint">Add Task Here.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* ToDoList Component */}
+          <ToDoList />
+
+        </div>
       </main>
 
-      <footer className="mt-5 py-3 text-center text-muted border-top">
+      <footer className="footer">
         <div className="container">
-          <p className="mb-0">To-Do List App • Built with React & Bootstrap</p>
-          <small>Click on any task to edit it</small>
+          <p className="footer-text">Static To-Do List App • Pure CSS • All Components Separate</p>
+          <p className="footer-subtext">Header, ToDoList, and ToDoItem are separate components with custom CSS</p>
         </div>
       </footer>
     </div>

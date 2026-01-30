@@ -1,9 +1,23 @@
 import React from 'react';
 import Header from './components/Header';
 import ToDoList from './components/ToDoList';
+import { useState } from 'react';
 import "./App.css";
 
 function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Learn React', completed: true, createdAt: new Date('2023-10-01') },
+    { id: 2, text: 'Build a To-Do App', completed: true, createdAt: new Date('2023-10-02') },
+    { id: 3, text: 'Style the application', completed: false, createdAt: new Date('2023-10-03') },
+    { id: 4, text: 'Add edit functionality', completed: false, createdAt: new Date('2023-10-04') },
+    { id: 5, text: 'Test the application', completed: false, createdAt: new Date('2023-10-05') },
+  ]);
+
+  // const [newTodo, setNewTodo] = useState('');
+
+
+  const completedTodos = todos.filter((todo) => todo.completed).length;
+  const pendingTodos = todos.length - completedTodos;
   return (
     <div className="app-container">
       <Header />
@@ -14,13 +28,13 @@ function App() {
           <div className="stats-container">
             <div className="stat-card stat-completed">
               <div className="stat-content">
-                <h3 className="stat-number">2</h3>
+                <h3 className="stat-number">{completedTodos}</h3>
                 <p className="stat-label">Completed</p>
               </div>
             </div>
             <div className="stat-card stat-pending">
               <div className="stat-content">
-                <h3 className="stat-number">3</h3>
+                <h3 className="stat-number">{pendingTodos}</h3>
                 <p className="stat-label">Pending</p>
               </div>
             </div>

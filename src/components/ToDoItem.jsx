@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ToDoItem.css';
 
-function ToDoItem({ task, isFirst, isLast }) {
+function ToDoItem({ 
+  task, 
+  isFirst, 
+  isLast, 
+  onDelete, 
+  onToggle, 
+  onStartEdit, 
+  onSaveEdit, 
+  onCancelEdit,
+  editingId,
+  editText,
+  setEditText,
+  onEditKeyPress 
+}) {
   const currentTask = task;
+  const isEditing = editingId === currentTask.id;
   
   // Format date
   const formattedDate = new Date(currentTask.createdAt).toLocaleDateString('en-US', {
@@ -13,17 +27,21 @@ function ToDoItem({ task, isFirst, isLast }) {
 
  
 
-  // Static handlers - they don't do anything
-  const handleEditClick = () => {
-    console.log('Edit clicked (static)');
+  // Handle double click to edit
+  const handleDoubleClick = () => {
+    if (!isEditing) {
+      onStartEdit(currentTask.id, currentTask.text);
+    }
   };
 
-  const handleDeleteClick = () => {
-    console.log('Delete clicked (static)');
+  // Handle save click
+  const handleSaveClick = () => {
+    onSaveEdit(currentTask.id);
   };
 
-  const handleCheckboxClick = () => {
-    console.log('Checkbox clicked (static)');
+  // Handle cancel click
+  const handleCancelClick = () => {
+    onCancelEdit();
   };
 
   // Check if task is new (added today)
@@ -34,14 +52,13 @@ function ToDoItem({ task, isFirst, isLast }) {
   };
 
   return (
-    <div className={`todo-item ${isFirst ? 'first-item' : ''} ${isLast ? 'last-item' : ''} ${currentTask.completed ? 'completed' : ''} ${isNewTask() ? 'new-task' : ''}`}>
+    <div className={`todo-item ${isFirst ? 'first-item' : ''} ${isLast ? 'last-item' : ''} ${currentTask.completed ? 'completed' : ''}`}>
       <div className="todo-item-content">
-        {/* Checkbox - Static */}
+        {/* Checkbox */}
         <div className="todo-checkbox">
           <div 
             className={`custom-checkbox ${currentTask.completed ? 'checked' : ''}`}
-            onClick={handleCheckboxClick}
-            style={{ cursor: 'not-allowed' }}
+            onClick={() => onToggle(currentTask.id)}
           >
             {currentTask.completed && (
               <svg className="checkmark" viewBox="0 0 24 24">
@@ -54,15 +71,33 @@ function ToDoItem({ task, isFirst, isLast }) {
         {/* Task Details */}
         <div className="todo-details">
           <div className="todo-header">
-            <h3 className="todo-text">
-              {currentTask.text}
-              {isNewTask() && <span className="new-badge">NEW</span>}
-            </h3>
-            <div className="todo-badges">
-              <span className={`status-badge ${currentTask.completed ? 'completed-badge' : 'pending-badge'}`}>
-                {currentTask.completed ? 'Completed' : 'Pending'}
-              </span>
-            </div>
+            {isEditing ? (
+              <div className="edit-input-container">
+                <input
+                  type="text"
+                  className="edit-input"
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  onKeyPress={(e) => onEditKeyPress(e, currentTask.id)}
+                  autoFocus
+                />
+              </div>
+            ) : (
+              <>
+                <h3 
+                  className="todo-text"
+                  onDoubleClick={handleDoubleClick}
+                >
+                  {currentTask.text}
+                </h3>
+                <div className="todo-badges">
+                  <span className={`status-badge ${currentTask.completed ? 'completed-badge' : 'pending-badge'}`}>
+                    {currentTask.completed ? 'Completed' : 'Pending'}
+                  </span>
+                  
+                </div>
+              </>
+            )}
           </div>
 
           <p className="todo-description">{currentTask.description}</p>
@@ -71,12 +106,12 @@ function ToDoItem({ task, isFirst, isLast }) {
             <div className="meta-left">
               <span className="meta-item">
                 <span className="meta-icon">📅</span>
-                Added: {formattedDate}
+                Created: {formattedDate}
               </span>
-              <span className="meta-item">
+              {/* <span className="meta-item">
                 <span className="meta-icon">🆔</span>
                 ID: #{currentTask.id}
-              </span>
+              </span> */}
             </div>
             <div className="meta-right">
               <span className="meta-item">
@@ -90,25 +125,44 @@ function ToDoItem({ task, isFirst, isLast }) {
           </div>
         </div>
 
-        {/* Action Buttons - Static */}
+        {/* Action Buttons */}
         <div className="todo-actions">
           <div className="action-buttons">
-            <button 
-              className="action-button edit-button static"
-              onClick={handleEditClick}
-              title="Static button - Edit functionality not implemented"
-            >
-              <span className="button-icon">✎</span>
-              Edit
-            </button>
-            <button 
-              className="action-button delete-button static"
-              onClick={handleDeleteClick}
-              title="Static button - Delete functionality not implemented"
-            >
-              <span className="button-icon">🗑</span>
-              Delete
-            </button>
+            {isEditing ? (
+              <>
+                <button 
+                  className="action-button save-button-sm"
+                  onClick={handleSaveClick}
+                >
+                  <span className="button-icon">✓</span>
+                  Save
+                </button>
+                <button 
+                  className="action-button cancel-button-sm"
+                  onClick={handleCancelClick}
+                >
+                  <span className="button-icon">✕</span>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  className="action-button edit-button"
+                  onClick={() => onStartEdit(currentTask.id, currentTask.text)}
+                >
+                  <span className="button-icon">✎</span>
+                  Edit
+                </button>
+                <button 
+                  className="action-button delete-button"
+                  onClick={() => onDelete(currentTask.id)}
+                >
+                  <span className="button-icon">🗑</span>
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

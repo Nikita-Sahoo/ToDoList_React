@@ -108,10 +108,7 @@ function ToDoItem({
                 <span className="meta-icon">📅</span>
                 Created: {formattedDate}
               </span>
-              {/* <span className="meta-item">
-                <span className="meta-icon">🆔</span>
-                ID: #{currentTask.id}
-              </span> */}
+              
             </div>
             <div className="meta-right">
               <span className="meta-item">
@@ -166,8 +163,6 @@ function ToDoItem({
           </div>
         </div>
       </div>
-
-      
     </div>
   );
 };

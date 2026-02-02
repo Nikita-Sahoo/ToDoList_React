@@ -166,11 +166,8 @@ function App() {
             setEditText={setEditText}
             onEditKeyPress={handleEditKeyPress}
           />
-
-
         </div>
       </main>
-
       <footer className="footer">
         <div className="container">
           <p className="footer-text"> To-Do List App • React State Management</p>
